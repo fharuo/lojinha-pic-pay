@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/app/lojinha-pic-pay", "destination": "/" },
+    { "source": "/app/lojinha-pic-pay/(.*)", "destination": "/$1" }
+  ],
+  "redirects": [
+    { "source": "/", "destination": "/app/lojinha-pic-pay", "statusCode": 302 }
+  ]
+}

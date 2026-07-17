@@ -1,0 +1,32 @@
+.processing {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 48px;
+  max-width: 407px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.processing__title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 34px;
+  letter-spacing: -0.03em;
+  color: var(--gray-900);
+}
+
+.processing__bar-bg {
+  width: 100%;
+  height: 5px;
+  background: rgba(18, 18, 18, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.processing__bar-fill {
+  height: 100%;
+  background: var(--primary-500);
+  border-radius: 4px;
+  transition: width 0.05s linear;
+}

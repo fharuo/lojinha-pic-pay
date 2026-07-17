@@ -1,0 +1,125 @@
+.confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.confirmation__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+
+.confirmation__icon {
+  width: 56px;
+  height: 56px;
+}
+
+.confirmation__title {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 25px;
+  letter-spacing: -0.03em;
+  color: var(--gray-900);
+}
+
+.confirmation__amount {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.confirmation__currency,
+.confirmation__value {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 41px;
+  letter-spacing: -0.03em;
+  color: var(--primary-500);
+}
+
+.confirmation__recipient {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--gray-900);
+}
+
+.confirmation__recipient strong {
+  font-weight: 700;
+}
+
+.confirmation__date {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--gray-900);
+}
+
+.confirmation__card {
+  background: var(--white);
+  padding: 16px;
+  max-width: 328px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.confirmation__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  line-height: 21px;
+  letter-spacing: 0.008em;
+  color: var(--gray-900);
+}
+
+.confirmation__row span {
+  font-weight: 400;
+}
+
+.confirmation__row strong {
+  font-weight: 700;
+  text-align: right;
+}
+
+.confirmation__approved {
+  color: var(--primary-500) !important;
+}
+
+.confirmation__separator {
+  width: 100%;
+  height: 1px;
+  background: var(--gray-50);
+}
+
+.confirmation__card-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.confirmation__card-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.confirmation__back {
+  padding: 9px 24px;
+  background: var(--primary-10);
+  color: var(--primary-700);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.confirmation__back:hover {
+  background: var(--primary-50);
+}

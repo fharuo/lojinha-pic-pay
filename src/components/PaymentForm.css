@@ -1,0 +1,243 @@
+.payment {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.payment__section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.payment__title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 25px;
+  letter-spacing: -0.03em;
+  color: var(--gray-900);
+}
+
+.payment__methods {
+  display: flex;
+  gap: 16px;
+}
+
+.payment__method {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 21px 16px;
+  width: 162px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.payment__method--active {
+  background: var(--primary-50);
+  border-color: var(--primary-500);
+}
+
+.payment__method-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.payment__method-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.payment__method span {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--gray-900);
+}
+
+.payment__subtitle {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 21px;
+  color: var(--gray-900);
+}
+
+.payment__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.payment__row {
+  display: flex;
+  gap: 16px;
+}
+
+.payment__row .payment__field {
+  flex: 1;
+}
+
+.payment__field {
+  position: relative;
+  border: 0.5px solid var(--gray-500);
+  border-radius: var(--radius-md);
+  background: var(--white);
+}
+
+.payment__field input,
+.payment__field select {
+  width: 100%;
+  padding: 20px 12px 8px;
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--gray-900);
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.payment__field label {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--gray-900);
+  pointer-events: none;
+  transition: all 0.15s ease;
+}
+
+.payment__field input:focus + label,
+.payment__field input:not(:placeholder-shown) + label {
+  top: 10px;
+  transform: none;
+  font-size: 10px;
+  line-height: 12px;
+  color: var(--gray-500);
+}
+
+.payment__field select:focus + label,
+.payment__field select + label.has-value {
+  top: 10px;
+  transform: none;
+  font-size: 10px;
+  line-height: 12px;
+  color: var(--gray-500);
+}
+
+.payment__field--icon input {
+  padding-right: 44px;
+}
+
+.payment__field-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  color: var(--gray-500);
+}
+
+.payment__info-icon {
+  color: var(--gray-500);
+}
+
+.payment__field--select {
+  position: relative;
+}
+
+.payment__field--select select {
+  cursor: pointer;
+  padding-right: 44px;
+}
+
+.payment__select-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  color: var(--gray-900);
+  pointer-events: none;
+}
+
+/* ── Actions ── */
+.payment__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.payment__back {
+  padding: 9px 24px;
+  background: var(--primary-10);
+  color: var(--primary-700);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.payment__back:hover {
+  background: var(--primary-50);
+}
+
+.payment__submit {
+  padding: 9px 24px;
+  background: var(--gray-200);
+  color: var(--gray-500);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.payment__submit--active {
+  background: var(--primary-500);
+  color: var(--white);
+}
+
+.payment__submit--active:hover {
+  background: var(--primary-700);
+}
+
+/* ── Tablet ── */
+@media (max-width: 1024px) {
+  .payment__methods {
+    flex-wrap: wrap;
+  }
+
+  .payment__method {
+    width: calc(50% - 8px);
+  }
+
+  .payment__row {
+    flex-direction: column;
+  }
+
+  .payment__actions {
+    margin-top: 16px;
+  }
+}
