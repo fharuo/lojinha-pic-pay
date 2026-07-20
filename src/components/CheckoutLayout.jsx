@@ -2,12 +2,12 @@ import Header from './Header'
 import Footer from './Footer'
 import './CheckoutLayout.css'
 
-function CheckoutLayout({ order, step, children }) {
+function CheckoutLayout({ order, step, onHome, children }) {
   const base = import.meta.env.BASE_URL
 
   return (
     <div className="checkout-wrap">
-      <Header />
+      <Header onHome={onHome} />
 
       <div className="checkout">
         <div className="checkout__inner">

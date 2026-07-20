@@ -25,3 +25,6 @@ dist-ssr
 
 .vercel
 .env*
+
+# referências de design baixadas do Figma
+.figma-ref/

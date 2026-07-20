@@ -1,6 +1,12 @@
 import './Confirmation.css'
 
-function Confirmation({ order, cardData, onBack }) {
+const METHOD_LABELS = {
+  credit: { name: 'Mastercard', icon: 'icon-credit-card.svg' },
+  pix: { name: 'Pix', icon: 'icon-pix.svg' },
+  picpay: { name: 'PicPay', icon: 'icon-picpay.svg' },
+}
+
+function Confirmation({ order, cardData, method = 'credit', onBack }) {
   const base = import.meta.env.BASE_URL
   const now = new Date()
   const dateStr = now.toLocaleDateString('pt-BR', {
@@ -14,6 +20,7 @@ function Confirmation({ order, cardData, onBack }) {
   })
 
   const lastFour = cardData.number.replace(/\s/g, '').slice(-4) || '****'
+  const paymentLabel = METHOD_LABELS[method] ?? METHOD_LABELS.credit
 
   return (
     <div className="confirmation">
@@ -55,13 +62,13 @@ function Confirmation({ order, cardData, onBack }) {
         <div className="confirmation__row">
           <div className="confirmation__card-info">
             <img
-              src={`${base}images/icon-credit-card.svg`}
+              src={`${base}images/${paymentLabel.icon}`}
               alt=""
               className="confirmation__card-icon"
             />
-            <span>Mastercard</span>
+            <span>{paymentLabel.name}</span>
           </div>
-          <strong>Final {lastFour}</strong>
+          <strong>{method === 'credit' ? `Final ${lastFour}` : 'Aprovado'}</strong>
         </div>
         <div className="confirmation__separator" />
         <div className="confirmation__row">

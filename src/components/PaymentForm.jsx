@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './PaymentForm.css'
 
 const PAYMENT_METHODS = [
@@ -7,11 +6,34 @@ const PAYMENT_METHODS = [
   { id: 'picpay', label: 'PicPay', icon: 'icon-picpay.svg' },
 ]
 
-function PaymentForm({ cardData, setCardData, onSubmit, onBack }) {
-  const [selectedMethod, setSelectedMethod] = useState('credit')
+const METHOD_CONTENT = {
+  pix: {
+    subtitle: 'Pix',
+    headline: 'Pagar com Pix é rápido e fácil',
+    steps: [
+      'Gere um código Pix;',
+      'No aplicativo do seu banco na área Pix escaneie o QR Code Pix ou use Pix copia e cola;',
+    ],
+    cta: 'Pagar com Pix',
+  },
+  picpay: {
+    subtitle: 'PicPay',
+    headline: 'Pague usando saldo ou cartão',
+    steps: [
+      'Escolha como quer pagar;',
+      'Gere e escaneie o QR Code ou toque na notificação que vamos enviar pro seu PicPay;',
+    ],
+    cta: 'Pagar com PicPay',
+  },
+}
+
+function PaymentForm({ cardData, setCardData, selectedMethod, setSelectedMethod, onSubmit, onBack }) {
   const base = import.meta.env.BASE_URL
 
+  const alternative = METHOD_CONTENT[selectedMethod]
   const isFormFilled = cardData.name && cardData.number && cardData.expiry && cardData.cvv && cardData.installments
+  // Pix e PicPay não têm campos, então o CTA já nasce habilitado.
+  const isReady = alternative ? true : isFormFilled
 
   const formatCardNumber = (value) => {
     const digits = value.replace(/\D/g, '').slice(0, 16)
@@ -34,7 +56,7 @@ function PaymentForm({ cardData, setCardData, onSubmit, onBack }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    onSubmit()
+    onSubmit(selectedMethod)
   }
 
   return (
@@ -58,8 +80,20 @@ function PaymentForm({ cardData, setCardData, onSubmit, onBack }) {
         </div>
       </div>
 
-      <h3 className="payment__subtitle">Cartão de crédito</h3>
+      <h3 className="payment__subtitle">
+        {alternative ? alternative.subtitle : 'Cartão de crédito'}
+      </h3>
 
+      {alternative ? (
+        <div className="payment__intro">
+          <p className="payment__intro-headline">{alternative.headline}</p>
+          <ol className="payment__steps">
+            {alternative.steps.map((stepText) => (
+              <li key={stepText}>{stepText}</li>
+            ))}
+          </ol>
+        </div>
+      ) : (
       <div className="payment__fields">
         <div className="payment__row">
           <div className="payment__field">
@@ -120,7 +154,8 @@ function PaymentForm({ cardData, setCardData, onSubmit, onBack }) {
             value={cardData.installments}
             onChange={handleChange('installments')}
           >
-            <option value="" disabled hidden>Número de parcelas</option>
+            {/* Vazia de propósito: quem mostra o texto no estado vazio é o <label> flutuante. */}
+            <option value="" disabled hidden></option>
             <option value="1">à vista</option>
             <option value="2">2x sem juros</option>
             <option value="3">3x sem juros</option>
@@ -133,6 +168,7 @@ function PaymentForm({ cardData, setCardData, onSubmit, onBack }) {
           </svg>
         </div>
       </div>
+      )}
 
       <div className="payment__actions">
         <button type="button" className="payment__back" onClick={onBack}>
@@ -140,9 +176,9 @@ function PaymentForm({ cardData, setCardData, onSubmit, onBack }) {
         </button>
         <button
           type="submit"
-          className={`payment__submit ${isFormFilled ? 'payment__submit--active' : ''}`}
+          className={`payment__submit ${isReady ? 'payment__submit--active' : ''}`}
         >
-          Pagar com cartão
+          {alternative ? alternative.cta : 'Pagar com cartão'}
         </button>
       </div>
     </form>

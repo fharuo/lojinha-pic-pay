@@ -82,8 +82,12 @@
 }
 
 .home__banner-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 34px;
   height: 34px;
+  color: var(--white);
   border-radius: 7px;
   flex-shrink: 0;
 }

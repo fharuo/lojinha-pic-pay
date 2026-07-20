@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './components/Home'
@@ -7,6 +7,8 @@ import CheckoutLayout from './components/CheckoutLayout'
 import PaymentForm from './components/PaymentForm'
 import Processing from './components/Processing'
 import Confirmation from './components/Confirmation'
+import AwaitPayment from './components/AwaitPayment'
+import PicPayApp from './components/PicPayApp'
 
 const PRODUCTS = [
   { id: 1, name: 'Kit de Facas', desc: 'Os utensílios ideais para um churrasco completo em qualquer ocasião.', image: 'prod-facas.png', price: 49.90 },
@@ -25,6 +27,8 @@ const PRODUCTS = [
 function App() {
   const [step, setStep] = useState('home')
   const [selectedProduct, setSelectedProduct] = useState(null)
+  const [paymentMethod, setPaymentMethod] = useState('credit')
+  const [showApp, setShowApp] = useState(false)
   const [cardData, setCardData] = useState({
     number: '',
     name: '',
@@ -55,21 +59,55 @@ function App() {
     setStep('payment')
   }
 
-  const handleSubmitPayment = () => {
+  // Guarda o timer do "processando" pra que sair da tela antes dos 3s não
+  // jogue a pessoa na confirmação depois.
+  const processingTimer = useRef(null)
+
+  const clearProcessing = () => {
+    if (processingTimer.current) {
+      clearTimeout(processingTimer.current)
+      processingTimer.current = null
+    }
+  }
+
+  useEffect(() => clearProcessing, [])
+
+  const runProcessing = () => {
+    clearProcessing()
     setStep('processing')
-    setTimeout(() => setStep('confirmation'), 3000)
+    processingTimer.current = setTimeout(() => {
+      processingTimer.current = null
+      setStep('confirmation')
+    }, 3000)
+  }
+
+  const handleSubmitPayment = (method) => {
+    // Cartão fecha direto; Pix e PicPay passam pela tela de QR Code + app.
+    if (method === 'credit') {
+      runProcessing()
+      return
+    }
+    setStep('await')
+  }
+
+  const handleAppComplete = () => {
+    setShowApp(false)
+    runProcessing()
   }
 
   const handleBackToStore = () => {
+    clearProcessing()
     setStep('home')
     setSelectedProduct(null)
+    setPaymentMethod('credit')
+    setShowApp(false)
     setCardData({ number: '', name: '', expiry: '', cvv: '', installments: '' })
   }
 
   if (step === 'home') {
     return (
       <>
-        <Header />
+        <Header onHome={handleBackToStore} />
         <Home products={PRODUCTS} onSelectProduct={handleSelectProduct} />
         <Footer />
       </>
@@ -79,7 +117,7 @@ function App() {
   if (step === 'cart') {
     return (
       <>
-        <Header />
+        <Header onHome={handleBackToStore} />
         <Cart
           product={selectedProduct}
           order={order}
@@ -93,10 +131,11 @@ function App() {
 
   if (step === 'confirmation') {
     return (
-      <CheckoutLayout order={order} step={step}>
+      <CheckoutLayout order={order} step={step} onHome={handleBackToStore}>
         <Confirmation
           order={order}
           cardData={cardData}
+          method={paymentMethod}
           onBack={handleBackToStore}
         />
       </CheckoutLayout>
@@ -105,17 +144,42 @@ function App() {
 
   if (step === 'processing') {
     return (
-      <CheckoutLayout order={order} step={step}>
+      <CheckoutLayout order={order} step={step} onHome={handleBackToStore}>
         <Processing />
       </CheckoutLayout>
     )
   }
 
+  if (step === 'await') {
+    return (
+      <>
+        <CheckoutLayout order={order} step={step} onHome={handleBackToStore}>
+          <AwaitPayment
+            method={paymentMethod}
+            order={order}
+            onOpenApp={() => setShowApp(true)}
+            onBack={() => setStep('payment')}
+          />
+        </CheckoutLayout>
+        {showApp && (
+          <PicPayApp
+            method={paymentMethod}
+            total={order.total}
+            onComplete={handleAppComplete}
+            onClose={() => setShowApp(false)}
+          />
+        )}
+      </>
+    )
+  }
+
   return (
-    <CheckoutLayout order={order} step={step}>
+    <CheckoutLayout order={order} step={step} onHome={handleBackToStore}>
       <PaymentForm
         cardData={cardData}
         setCardData={setCardData}
+        selectedMethod={paymentMethod}
+        setSelectedMethod={setPaymentMethod}
         onSubmit={handleSubmitPayment}
         onBack={() => setStep('cart')}
       />

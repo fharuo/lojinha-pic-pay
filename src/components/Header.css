@@ -13,7 +13,26 @@
   height: 80px;
 }
 
+.header__home {
+  display: flex;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.header__home:hover {
+  opacity: 0.75;
+}
+
+.header__home:focus-visible {
+  outline: 2px solid var(--green-brand);
+  outline-offset: 4px;
+}
+
 .header__logo {
+  display: block;
   width: 123px;
   height: auto;
 }
