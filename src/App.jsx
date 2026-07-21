@@ -9,6 +9,7 @@ import Processing from './components/Processing'
 import Confirmation from './components/Confirmation'
 import AwaitPayment from './components/AwaitPayment'
 import PicPayApp from './components/PicPayApp'
+import Wheel from './components/Wheel'
 
 const PRODUCTS = [
   { id: 1, name: 'Kit de Facas', desc: 'Os utensílios ideais para um churrasco completo em qualquer ocasião.', image: 'prod-facas.png', price: 49.90 },
@@ -24,18 +25,22 @@ const PRODUCTS = [
   { id: 11, name: 'Power Bank', desc: 'Energia extra para o seu dia a dia.', image: 'prod-powerbank.png', price: 49.90 },
 ]
 
+// Dados fictícios do cartão: o totem já vem preenchido e travado, então o
+// visitante não digita nada.
+const DEFAULT_CARD = {
+  number: '5286 8320 1044 9458',
+  name: 'SABRINA DA SILVA',
+  expiry: '12/29',
+  cvv: '123',
+  installments: '1',
+}
+
 function App() {
   const [step, setStep] = useState('home')
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [paymentMethod, setPaymentMethod] = useState('credit')
   const [showApp, setShowApp] = useState(false)
-  const [cardData, setCardData] = useState({
-    number: '',
-    name: '',
-    expiry: '',
-    cvv: '',
-    installments: '',
-  })
+  const [cardData, setCardData] = useState(DEFAULT_CARD)
 
   const order = selectedProduct
     ? {
@@ -101,7 +106,7 @@ function App() {
     setSelectedProduct(null)
     setPaymentMethod('credit')
     setShowApp(false)
-    setCardData({ number: '', name: '', expiry: '', cvv: '', installments: '' })
+    setCardData(DEFAULT_CARD)
   }
 
   if (step === 'home') {
@@ -137,6 +142,7 @@ function App() {
           cardData={cardData}
           method={paymentMethod}
           onBack={handleBackToStore}
+          onWheel={() => setStep('wheel')}
         />
       </CheckoutLayout>
     )
@@ -148,6 +154,10 @@ function App() {
         <Processing />
       </CheckoutLayout>
     )
+  }
+
+  if (step === 'wheel') {
+    return <Wheel onBack={handleBackToStore} />
   }
 
   if (step === 'await') {

@@ -123,3 +123,22 @@
 .confirmation__back:hover {
   background: var(--primary-50);
 }
+
+.confirmation__wheel {
+  margin-top: 12px;
+  padding: 14px 24px;
+  background: var(--green-brand);
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.confirmation__wheel:hover {
+  filter: brightness(1.06);
+}

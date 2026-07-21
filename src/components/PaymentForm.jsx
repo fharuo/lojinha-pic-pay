@@ -94,7 +94,7 @@ function PaymentForm({ cardData, setCardData, selectedMethod, setSelectedMethod,
           </ol>
         </div>
       ) : (
-      <div className="payment__fields">
+      <div className="payment__fields payment__fields--locked">
         <div className="payment__row">
           <div className="payment__field">
             <input
@@ -102,6 +102,9 @@ function PaymentForm({ cardData, setCardData, selectedMethod, setSelectedMethod,
               placeholder=" "
               value={cardData.name}
               onChange={handleChange('name')}
+              readOnly
+              tabIndex={-1}
+              inputMode="none"
             />
             <label>Nome impresso no cartão</label>
           </div>
@@ -109,9 +112,11 @@ function PaymentForm({ cardData, setCardData, selectedMethod, setSelectedMethod,
             <input
               type="text"
               placeholder=" "
-              inputMode="numeric"
               value={cardData.number}
               onChange={handleChange('number')}
+              readOnly
+              tabIndex={-1}
+              inputMode="none"
             />
             <label>Número do cartão</label>
             <img
@@ -127,9 +132,11 @@ function PaymentForm({ cardData, setCardData, selectedMethod, setSelectedMethod,
             <input
               type="text"
               placeholder=" "
-              inputMode="numeric"
               value={cardData.expiry}
               onChange={handleChange('expiry')}
+              readOnly
+              tabIndex={-1}
+              inputMode="none"
             />
             <label>Validade</label>
           </div>
@@ -137,9 +144,11 @@ function PaymentForm({ cardData, setCardData, selectedMethod, setSelectedMethod,
             <input
               type="text"
               placeholder=" "
-              inputMode="numeric"
               value={cardData.cvv}
               onChange={handleChange('cvv')}
+              readOnly
+              tabIndex={-1}
+              inputMode="none"
             />
             <label>CVV</label>
             <svg className="payment__field-icon payment__info-icon" viewBox="0 0 24 24" fill="none" width="24" height="24">
@@ -153,6 +162,8 @@ function PaymentForm({ cardData, setCardData, selectedMethod, setSelectedMethod,
           <select
             value={cardData.installments}
             onChange={handleChange('installments')}
+            tabIndex={-1}
+            aria-disabled="true"
           >
             {/* Vazia de propósito: quem mostra o texto no estado vazio é o <label> flutuante. */}
             <option value="" disabled hidden></option>

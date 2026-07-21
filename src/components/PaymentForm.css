@@ -74,6 +74,18 @@
   gap: 16px;
 }
 
+/* Campos pré-preenchidos e travados no totem: sem clique, sem foco, sem
+   teclado. O visual continua idêntico ao de um campo preenchido. */
+.payment__fields--locked input,
+.payment__fields--locked select {
+  pointer-events: none;
+  user-select: none;
+}
+
+.payment__fields--locked .payment__field {
+  cursor: default;
+}
+
 .payment__row {
   display: flex;
   gap: 16px;

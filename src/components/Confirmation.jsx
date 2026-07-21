@@ -6,7 +6,7 @@ const METHOD_LABELS = {
   picpay: { name: 'PicPay', icon: 'icon-picpay.svg' },
 }
 
-function Confirmation({ order, cardData, method = 'credit', onBack }) {
+function Confirmation({ order, cardData, method = 'credit', onBack, onWheel }) {
   const base = import.meta.env.BASE_URL
   const now = new Date()
   const dateStr = now.toLocaleDateString('pt-BR', {
@@ -80,6 +80,12 @@ function Confirmation({ order, cardData, method = 'credit', onBack }) {
       <button type="button" className="confirmation__back" onClick={onBack}>
         Voltar para a loja
       </button>
+
+      {onWheel && (
+        <button type="button" className="confirmation__wheel" onClick={onWheel}>
+          Roleta de Prêmios
+        </button>
+      )}
     </div>
   )
 }
