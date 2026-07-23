@@ -30,7 +30,9 @@
   flex-direction: column;
   width: 375px;
   height: 812px;
-  max-height: calc(100vh - 48px);
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 375 / 812;
   overflow: hidden;
   background: #fff;
   color: var(--pk-ink);
@@ -374,6 +376,11 @@
   border-radius: 16px;
 }
 
+/* Só o botão Pagar responde na home — o resto é vitrine. */
+.pk__home button:not(.pk__fab) {
+  pointer-events: none;
+}
+
 .pk__fab {
   position: absolute;
   right: 20px;
@@ -389,6 +396,22 @@
   border: none;
   border-radius: 100px;
   cursor: pointer;
+  animation: pk-fab-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pk-fab-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(0, 0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pk__fab {
+    animation: none;
+  }
 }
 
 .pk__tabbar {
@@ -734,6 +757,26 @@
 /* Aparece igual, mas não responde: mantém o visual do Figma. */
 .pk__method--locked {
   cursor: default;
+}
+
+/* Única forma liberada nesta simulação: pisca pra guiar o toque. */
+.pk__method--pulse {
+  animation: pk-method-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pk-method-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(20, 122, 100, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(20, 122, 100, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pk__method--pulse {
+    animation: none;
+  }
 }
 
 .pk__method--add {
@@ -1120,15 +1163,12 @@
   border-radius: 12px;
 }
 
-@media (max-width: 420px), (max-height: 860px) {
+@media (max-width: 420px) {
   .pk {
     padding: 8px;
   }
 
   .pk__phone {
-    width: 100%;
-    height: 100%;
-    max-height: none;
     border-radius: 16px;
   }
 }

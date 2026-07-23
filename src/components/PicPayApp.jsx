@@ -174,12 +174,7 @@ function HomeScreen({ onPix }) {
         <h4 className="pk__section">Pro dia a dia</h4>
         <div className="pk__actions">
           {QUICK_ACTIONS.map((action) => (
-            <button
-              key={action.id}
-              type="button"
-              className="pk__action"
-              onClick={action.id === 'pix' ? onPix : undefined}
-            >
+            <button key={action.id} type="button" className="pk__action">
               <span className={`pk__action-tile ${action.primary ? 'pk__action-tile--on' : ''}`}>
                 {action.icon}
               </span>
@@ -305,8 +300,10 @@ function ScannerScreen({ total, onBack, onScan }) {
 
 /* ---------- 5/6. escolha de formas ---------- */
 
-function MethodsScreen({ total, selected, onSelect, onContinue, onClose }) {
+function MethodsScreen({ total, method, selected, onSelect, onContinue, onClose }) {
   const current = METHODS.find((m) => m.id === selected)
+  // No totem, só a forma escolhida na loja (Pix -> Saldo, PicPay -> Card) fica disponível.
+  const allowedId = method === 'pix' ? 'saldo' : 'card'
 
   return (
     <div className="pk__sheet">
@@ -330,14 +327,15 @@ function MethodsScreen({ total, selected, onSelect, onContinue, onClose }) {
         <div className="pk__methods">
           {METHODS.map((method) => {
             const on = method.id === selected
+            const locked = method.locked || method.id !== allowedId
             return (
               <button
                 key={method.id}
                 type="button"
                 className={`pk__method ${on ? 'pk__method--on' : ''} ${
-                  method.locked ? 'pk__method--locked' : ''
-                }`}
-                disabled={method.locked}
+                  locked ? 'pk__method--locked' : ''
+                } ${method.id === allowedId ? 'pk__method--pulse' : ''}`}
+                disabled={locked}
                 onClick={() => onSelect(method.id)}
               >
                 {METHOD_ICON[method.icon]}
@@ -591,12 +589,13 @@ function ReceiptScreen({ method, total, onFinish }) {
 /* ---------- shell ---------- */
 
 /* Etapas com avanço automático: [etapa, duração em ms]. */
-const AUTO = { splash: 1200, faceid: 1400, check: 1800 }
-const NEXT = { splash: 'faceid', faceid: 'home', check: 'receipt' }
+const AUTO = { splash: 1200, faceid: 1400, scanner: 2000, check: 1800 }
+const NEXT = { splash: 'faceid', faceid: 'home', scanner: 'methods', check: 'receipt' }
 
 function PicPayApp({ method, total, onComplete, onClose }) {
   const [stage, setStage] = useState('splash')
-  const [selected, setSelected] = useState(method === 'pix' ? 'saldo' : 'card')
+  // Nasce sem seleção: quem escolhe a forma liberada é o usuário, tocando nela.
+  const [selected, setSelected] = useState(null)
   const [installments, setInstallments] = useState(1)
 
   // Só o PicPay Card passa pela escolha de parcelas; o saldo vai direto pro pagamento.
@@ -608,6 +607,13 @@ function PicPayApp({ method, total, onComplete, onClose }) {
     const id = setTimeout(() => setStage(NEXT[stage]), delay)
     return () => clearTimeout(id)
   }, [stage])
+
+  // Comprovante fecha sozinho depois de alguns segundos, sem precisar de toque.
+  useEffect(() => {
+    if (stage !== 'receipt') return
+    const id = setTimeout(onComplete, 3500)
+    return () => clearTimeout(id)
+  }, [stage, onComplete])
 
   const dark = stage === 'splash' || stage === 'faceid'
 
@@ -625,6 +631,7 @@ function PicPayApp({ method, total, onComplete, onClose }) {
         {stage === 'methods' && (
           <MethodsScreen
             total={total}
+            method={method}
             selected={selected}
             onSelect={setSelected}
             onContinue={() => setStage(needsInstallments ? 'installments' : 'pay')}

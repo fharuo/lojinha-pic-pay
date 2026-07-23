@@ -23,7 +23,6 @@
 .footer__content {
   flex: 1;
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
 }
 
@@ -68,31 +67,6 @@
   line-height: 1.2;
   color: var(--footer-text);
   margin-top: 24px;
-}
-
-.footer__app {
-  display: flex;
-  align-items: center;
-  background: var(--footer-card);
-  border-radius: 8px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.footer__app-text {
-  font-size: 16px;
-  font-weight: 700;
-  color: #F2F2F2;
-  line-height: 1;
-  padding: 16px;
-}
-
-.footer__app-qr {
-  display: block;
-  width: 76px;
-  height: 76px;
-  margin: 8px 10px 8px 0;
-  color: var(--white);
 }
 
 @media (max-width: 768px) {

@@ -28,7 +28,7 @@ const PRODUCTS = [
 // Dados fictícios do cartão: o totem já vem preenchido e travado, então o
 // visitante não digita nada.
 const DEFAULT_CARD = {
-  number: '5286 8320 1044 9458',
+  number: '1234 5678 9012 3456',
   name: 'SABRINA DA SILVA',
   expiry: '12/29',
   cvv: '123',

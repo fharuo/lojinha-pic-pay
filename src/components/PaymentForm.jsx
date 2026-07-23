@@ -1,3 +1,4 @@
+import { MastercardMark, PicPayLockup } from './PicPayIcons'
 import './PaymentForm.css'
 
 const PAYMENT_METHODS = [
@@ -11,19 +12,23 @@ const METHOD_CONTENT = {
     subtitle: 'Pix',
     headline: 'Pagar com Pix é rápido e fácil',
     steps: [
-      'Gere um código Pix;',
-      'No aplicativo do seu banco na área Pix escaneie o QR Code Pix ou use Pix copia e cola;',
+      { icon: 'icon-qrcode-scan.svg', text: 'Gere um código Pix;' },
+      { icon: 'icon-pix.svg', text: 'No aplicativo do seu banco na área Pix escaneie o QR Code Pix ou use Pix copia e cola;' },
+      { icon: 'icon-check-circle.svg', text: 'Confirme o pagamento e pronto!' },
     ],
     cta: 'Pagar com Pix',
+    logo: 'pix',
   },
   picpay: {
     subtitle: 'PicPay',
     headline: 'Pague usando saldo ou cartão',
     steps: [
-      'Escolha como quer pagar;',
-      'Gere e escaneie o QR Code ou toque na notificação que vamos enviar pro seu PicPay;',
+      { icon: 'icon-picpay.svg', text: 'Gere e escaneie o QR Code ou toque na notificação que vamos enviar pro seu PicPay;' },
+      { icon: 'icon-wallet.svg', text: 'Escolha como quer pagar;' },
+      { icon: 'icon-check-circle.svg', text: 'Confirme o pagamento e pronto!' },
     ],
     cta: 'Pagar com PicPay',
+    logo: 'picpay',
   },
 }
 
@@ -86,12 +91,30 @@ function PaymentForm({ cardData, setCardData, selectedMethod, setSelectedMethod,
 
       {alternative ? (
         <div className="payment__intro">
-          <p className="payment__intro-headline">{alternative.headline}</p>
-          <ol className="payment__steps">
-            {alternative.steps.map((stepText) => (
-              <li key={stepText}>{stepText}</li>
-            ))}
-          </ol>
+          <div className="payment__intro-content">
+            <p className="payment__intro-headline">{alternative.headline}</p>
+            <ol className="payment__steps">
+              {alternative.steps.map((step) => (
+                <li key={step.text}>
+                  <span className="payment__step-icon">
+                    <img src={`${base}images/${step.icon}`} alt="" />
+                  </span>
+                  <span>{step.text}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+          {alternative.logo === 'picpay' && (
+            <div className="payment__intro-logo payment__intro-logo--picpay">
+              <PicPayLockup width={82} />
+            </div>
+          )}
+          {alternative.logo === 'pix' && (
+            <div className="payment__intro-logo payment__intro-logo--pix">
+              <img src={`${base}images/pix-mark.png`} alt="" className="payment__pix-mark" />
+              <img src={`${base}images/pix-wordmark.png`} alt="Pix" className="payment__pix-wordmark" />
+            </div>
+          )}
         </div>
       ) : (
       <div className="payment__fields payment__fields--locked">
@@ -119,11 +142,7 @@ function PaymentForm({ cardData, setCardData, selectedMethod, setSelectedMethod,
               inputMode="none"
             />
             <label>Número do cartão</label>
-            <img
-              src={`${base}images/icon-credit-card.svg`}
-              alt=""
-              className="payment__field-icon"
-            />
+            <MastercardMark size={30} className="payment__field-icon payment__field-icon--mastercard" />
           </div>
         </div>
 

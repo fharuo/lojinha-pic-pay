@@ -1,4 +1,3 @@
-import QrCode from './QrCode'
 import './Footer.css'
 
 /* Redes na ordem do Figma: Facebook, Instagram, X, TikTok, YouTube, LinkedIn. */
@@ -79,15 +78,6 @@ function Footer() {
                 <br />
                 Avenida Manuel Bandeira, nº 291, Bloco B, 3° andar, Vila Leopoldina, São Paulo/SP, CEP 05317-020
               </p>
-            </div>
-            <div className="footer__app">
-              <span className="footer__app-text">Baixar<br />o App</span>
-              <QrCode
-                value="baixar-o-app"
-                size={64}
-                className="footer__app-qr"
-                background="var(--footer-card)"
-              />
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import QrCode from './QrCode'
+import { PicPaySymbol } from './PicPayIcons'
 import './AwaitPayment.css'
 
 const PIX_CODE =
@@ -33,7 +34,11 @@ function AwaitPayment({ method, order, onOpenApp, onBack }) {
       // ambiente sem permissão de clipboard: o feedback visual basta pra simulação
     }
     setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    // Copiar o código Pix já dispara a abertura do app do PicPay na simulação.
+    setTimeout(() => {
+      setCopied(false)
+      onOpenApp()
+    }, 900)
   }
 
   return (
@@ -56,6 +61,11 @@ function AwaitPayment({ method, order, onOpenApp, onBack }) {
 
       <div className="await__qr-box">
         <QrCode value={`${method}-${order.orderId}`} size={208} className="await__qr" />
+        {!isPix && (
+          <span className="await__qr-badge" aria-hidden="true">
+            <PicPaySymbol size={22} />
+          </span>
+        )}
       </div>
 
       {isPix ? (
@@ -71,14 +81,16 @@ function AwaitPayment({ method, order, onOpenApp, onBack }) {
         </p>
       )}
 
-      <div className="await__sim">
-        <p className="await__sim-hint">
-          Simulação do evento — toque abaixo para abrir o app do PicPay.
-        </p>
-        <button type="button" className="await__sim-button" onClick={onOpenApp}>
-          Abrir app do PicPay
-        </button>
-      </div>
+      {!isPix && (
+        <div className="await__sim">
+          <p className="await__sim-hint">
+            Simulação do evento — toque abaixo para abrir o app do PicPay.
+          </p>
+          <button type="button" className="await__sim-button" onClick={onOpenApp}>
+            Abrir app do PicPay
+          </button>
+        </div>
+      )}
 
       <div className="await__actions">
         <button type="button" className="await__back" onClick={onBack}>

@@ -1,3 +1,4 @@
+import { MastercardMark } from './PicPayIcons'
 import './Confirmation.css'
 
 const METHOD_LABELS = {
@@ -61,11 +62,15 @@ function Confirmation({ order, cardData, method = 'credit', onBack, onWheel }) {
         <div className="confirmation__separator" />
         <div className="confirmation__row">
           <div className="confirmation__card-info">
-            <img
-              src={`${base}images/${paymentLabel.icon}`}
-              alt=""
-              className="confirmation__card-icon"
-            />
+            {method === 'credit' ? (
+              <MastercardMark size={30} className="confirmation__card-icon confirmation__card-icon--mastercard" />
+            ) : (
+              <img
+                src={`${base}images/${paymentLabel.icon}`}
+                alt=""
+                className="confirmation__card-icon"
+              />
+            )}
             <span>{paymentLabel.name}</span>
           </div>
           <strong>{method === 'credit' ? `Final ${lastFour}` : 'Aprovado'}</strong>
